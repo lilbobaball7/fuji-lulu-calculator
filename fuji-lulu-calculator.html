@@ -1,0 +1,1184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#176b72">
+  <title>Fuji & Lulu — Calories + Water</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f7f6;
+      --surface: #ffffff;
+      --surface-soft: #eaf2f1;
+      --text: #172322;
+      --muted: #5c6c69;
+      --border: #cfddda;
+      --brand: #176b72;
+      --brand-2: #0f555b;
+      --brand-soft: #dcefed;
+      --warm: #aa5a33;
+      --warm-soft: #f7e8df;
+      --danger: #a3333d;
+      --danger-soft: #fae7e9;
+      --good: #1f7654;
+      --shadow: 0 12px 36px rgba(28, 57, 54, 0.08);
+      --radius: 18px;
+      --radius-sm: 11px;
+      --max: 1120px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101615;
+        --surface: #18201f;
+        --surface-soft: #202b29;
+        --text: #eef6f4;
+        --muted: #aec0bc;
+        --border: #344440;
+        --brand: #69c8c5;
+        --brand-2: #8bd7d4;
+        --brand-soft: #173b3b;
+        --warm: #f1a474;
+        --warm-soft: #442d25;
+        --danger: #ff9ca5;
+        --danger-soft: #47262b;
+        --good: #7fd5ad;
+        --shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 5% 0%, color-mix(in srgb, var(--brand) 10%, transparent), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      font-family: ui-rounded, "SF Pro Rounded", "Avenir Next", Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button, input, select { font: inherit; }
+
+    button, select, input[type="number"] { min-height: 44px; }
+
+    a { color: var(--brand-2); text-underline-offset: 3px; }
+
+    button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--brand) 42%, transparent);
+      outline-offset: 2px;
+    }
+
+    .app-shell {
+      width: min(100% - 28px, var(--max));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      margin: 0 0 6px;
+      color: var(--brand-2);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 { line-height: 1.16; }
+    h1 { margin: 0; font-size: clamp(2rem, 6vw, 3.75rem); letter-spacing: -0.045em; }
+    h2 { margin: 0; font-size: clamp(1.25rem, 3vw, 1.65rem); letter-spacing: -0.02em; }
+    h3 { margin: 0; font-size: 1rem; }
+    p { margin: 0; }
+
+    .hero-copy {
+      max-width: 720px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+
+    .button {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 9px 15px;
+      color: var(--text);
+      background: var(--surface);
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--text) 5%, transparent);
+      cursor: pointer;
+    }
+
+    .button:hover { border-color: var(--brand); }
+    .button.primary { background: var(--brand); color: #fff; border-color: var(--brand); }
+    @media (prefers-color-scheme: dark) { .button.primary { color: #08201f; } }
+
+    .notice {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 15px 17px;
+      margin-bottom: 18px;
+      border-radius: var(--radius-sm);
+      background: var(--warm-soft);
+      color: var(--text);
+    }
+
+    .notice strong { color: var(--warm); }
+    .notice-icon { font-size: 1.2rem; line-height: 1.2; }
+
+    .cat-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+    }
+
+    .cat-tab {
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .cat-tab[aria-selected="true"] { background: var(--brand); color: #fff; }
+    @media (prefers-color-scheme: dark) { .cat-tab[aria-selected="true"] { color: #08201f; } }
+
+    .panel, .intake-section, details.reference-panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--surface) 96%, transparent);
+      box-shadow: var(--shadow);
+    }
+
+    .profile-panel { padding: 18px; margin-bottom: 14px; }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      align-items: end;
+    }
+
+    .both-profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .cat-profile-card {
+      padding: 14px;
+      border-radius: 13px;
+      background: var(--surface-soft);
+    }
+
+    .cat-profile-card h3 { margin-bottom: 10px; }
+    .cat-profile-card .profile-grid { gap: 9px; }
+    [hidden] { display: none !important; }
+
+    label.field { display: grid; gap: 6px; color: var(--muted); font-size: 0.84rem; font-weight: 700; }
+
+    input[type="number"], select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 10px;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .field-help { display: block; margin-top: 8px; color: var(--muted); font-size: 0.82rem; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .metric {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .metric-label { color: var(--muted); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.055em; }
+    .metric-value { margin-top: 5px; font-size: clamp(1.35rem, 4vw, 2rem); font-weight: 800; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+    .metric-context { min-height: 2.5em; margin-top: 2px; color: var(--muted); font-size: 0.82rem; }
+
+    .meter { height: 8px; margin-top: 12px; overflow: hidden; border-radius: 99px; background: var(--surface-soft); }
+    .meter > span { display: block; width: 0; height: 100%; background: var(--brand); transition: width 180ms ease; }
+    .meter.warm > span { background: var(--warm); }
+
+    .section-stack { display: grid; gap: 14px; }
+    .intake-section { overflow: hidden; }
+    .section-head { display: flex; gap: 16px; align-items: start; justify-content: space-between; padding: 18px 18px 12px; }
+    .section-copy { margin-top: 5px; color: var(--muted); font-size: 0.86rem; }
+    .section-subtotal { text-align: right; color: var(--muted); font-size: 0.82rem; font-variant-numeric: tabular-nums; }
+    .section-subtotal strong { display: block; color: var(--text); font-size: 1rem; }
+
+    .food-list { display: grid; }
+
+    .food-row {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) minmax(112px, 0.38fr) minmax(112px, 0.38fr) minmax(150px, 0.55fr);
+      gap: 12px;
+      align-items: center;
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .food-name { font-weight: 750; }
+    .food-meta { margin-top: 3px; color: var(--muted); font-size: 0.79rem; }
+    .food-result { text-align: right; font-variant-numeric: tabular-nums; }
+    .food-result strong { display: block; }
+    .food-result span { color: var(--muted); font-size: 0.78rem; }
+    .unit-select { min-width: 0; }
+
+    .water-row { grid-template-columns: minmax(220px, 1fr) minmax(112px, 0.38fr) minmax(112px, 0.38fr) minmax(150px, 0.55fr); }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .target-panel { padding: 20px; }
+    .target-panel > p { margin-top: 8px; color: var(--muted); }
+
+    .target-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+    .target-card { padding: 13px; border-radius: 12px; background: var(--surface-soft); }
+    .target-card span { display: block; color: var(--muted); font-size: 0.78rem; }
+    .target-card strong { display: block; margin-top: 3px; font-size: 1.08rem; font-variant-numeric: tabular-nums; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .safety-panel { padding: 20px; }
+    .safety-panel ul { margin: 12px 0 0; padding-left: 20px; }
+    .safety-panel li + li { margin-top: 9px; }
+    .emergency { margin-top: 15px; padding: 13px; border-radius: 11px; background: var(--danger-soft); color: var(--text); }
+    .emergency strong { color: var(--danger); }
+
+    details.reference-panel { margin-top: 14px; overflow: hidden; }
+    details.reference-panel > summary { padding: 18px 20px; cursor: pointer; font-weight: 800; }
+    .reference-body { padding: 0 20px 20px; }
+    .reference-body > p { color: var(--muted); margin-bottom: 14px; }
+    .reference-table input { min-width: 90px; }
+    .source-list { columns: 2; column-gap: 32px; margin: 14px 0 0; padding-left: 20px; }
+    .source-list li { break-inside: avoid; margin-bottom: 9px; }
+
+    .method-note { margin-top: 16px; padding: 14px; border-radius: 11px; background: var(--brand-soft); color: var(--text); }
+    .muted { color: var(--muted); }
+    .small { font-size: 0.82rem; }
+
+    .footer { margin-top: 24px; color: var(--muted); font-size: 0.78rem; text-align: center; }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 20;
+      max-width: min(360px, calc(100% - 36px));
+      padding: 12px 15px;
+      border-radius: 11px;
+      background: var(--text);
+      color: var(--bg);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: 160ms ease;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; align-items: start; }
+      .toolbar { justify-content: flex-start; }
+      .summary-grid, .profile-grid, .both-profile-grid { grid-template-columns: 1fr; }
+      .bottom-grid { grid-template-columns: 1fr; }
+      .food-row, .water-row { grid-template-columns: minmax(0, 1fr) minmax(100px, 0.42fr); }
+      .food-row .unit-select { grid-column: 2; }
+      .food-result { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 10px; text-align: left; padding-top: 2px; }
+      .food-result span { text-align: right; }
+      .source-list { columns: 1; }
+    }
+
+    @media (max-width: 520px) {
+      .app-shell { width: min(100% - 18px, var(--max)); padding-top: 18px; }
+      .hero-copy { font-size: 0.94rem; }
+      .toolbar .button { flex: 1 1 auto; }
+      .profile-panel, .target-panel, .safety-panel { padding: 15px; }
+      .section-head { padding: 15px 14px 11px; }
+      .food-row { padding: 13px 14px; grid-template-columns: minmax(0, 1fr) 104px; }
+      .target-cards { grid-template-columns: 1fr; }
+      .metric { padding: 14px; }
+      th, td { padding: 8px 7px; }
+      .cat-tab { padding: 7px 4px; font-size: 0.82rem; }
+    }
+
+    @media print {
+      :root { color-scheme: light; --bg: #fff; --surface: #fff; --surface-soft: #f2f6f5; --text: #111; --muted: #555; --border: #bbb; }
+      body { background: #fff; }
+      .app-shell { width: 100%; padding: 0; }
+      .toolbar, .cat-tabs, details.reference-panel, .footer { display: none !important; }
+      .panel, .intake-section { box-shadow: none; break-inside: avoid; }
+      .food-row { padding-top: 8px; padding-bottom: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Daily food + hydration tracker</p>
+        <h1>Fuji & Lulu</h1>
+        <p class="hero-copy">Enter what each cat eats and drinks. The calculator totals calories, estimates water from food, and compares the day with evidence-based starting targets.</p>
+      </div>
+      <div class="toolbar" aria-label="Calculator actions">
+        <button class="button" id="copy-summary" type="button">Copy day summary</button>
+        <button class="button" id="clear-day" type="button">Clear amounts</button>
+        <button class="button primary" id="print-page" type="button">Print / save PDF</button>
+      </div>
+    </header>
+
+    <aside class="notice" aria-label="Important note for Fuji">
+      <div class="notice-icon" aria-hidden="true">⚕</div>
+      <p><strong>Fuji’s urinary plan comes first.</strong> Because he has stress-related FIC and a prior obstruction, use this to track—not to replace—his veterinarian’s diet plan. Hill’s directs c/d users to feed the recommended Prescription Diet foods exclusively. Mixing in ordinary foods can change the intended urine-mineral and pH effects.</p>
+    </aside>
+
+    <div class="cat-tabs" role="tablist" aria-label="Choose cat">
+      <button class="cat-tab" id="tab-fuji" role="tab" aria-selected="true" aria-controls="calculator-panel" type="button" data-cat="fuji">Fuji · 12.8 lb</button>
+      <button class="cat-tab" id="tab-lulu" role="tab" aria-selected="false" aria-controls="calculator-panel" type="button" data-cat="lulu">Lulu · 11.6 lb</button>
+      <button class="cat-tab" id="tab-both" role="tab" aria-selected="false" aria-controls="calculator-panel" type="button" data-cat="both">Fuji + Lulu · 24.4 lb</button>
+    </div>
+
+    <section id="calculator-panel" role="tabpanel" aria-labelledby="tab-fuji">
+      <div class="panel profile-panel">
+        <div id="single-profile-fields">
+          <div class="profile-grid">
+            <label class="field">Current weight (lb)
+              <input id="current-weight" type="number" min="1" max="40" step="0.1" inputmode="decimal">
+            </label>
+            <label class="field">Body condition score (1–9)
+              <select id="bcs-select">
+                <option value="3">3 — under ideal</option>
+                <option value="4">4 — lean / ideal</option>
+                <option value="5">5 — ideal</option>
+                <option value="6">6 — ~10% over ideal</option>
+                <option value="7">7 — ~20% over ideal</option>
+                <option value="8">8 — ~30% over ideal</option>
+                <option value="9">9 — ~40% over ideal</option>
+              </select>
+            </label>
+            <label class="field">Maintenance profile
+              <select id="maintenance-profile">
+                <option value="indoor">Indoor / easy keeper · 1.0× RER</option>
+                <option value="neutered">Typical neutered adult · 1.2–1.4× RER</option>
+                <option value="intact">Intact adult · 1.4–1.6× RER</option>
+              </select>
+            </label>
+          </div>
+          <span class="field-help">BCS 5 is preselected only as a neutral placeholder. A hands-on BCS and muscle score—not sex or “domestic shorthair”—determines an evidence-based target weight.</span>
+        </div>
+        <div id="both-profile-fields" hidden>
+          <div class="both-profile-grid">
+            <section class="cat-profile-card" aria-labelledby="both-fuji-title">
+              <h3 id="both-fuji-title">Fuji</h3>
+              <div class="profile-grid">
+                <label class="field">Weight (lb)<input class="both-weight" data-profile-cat="fuji" type="number" min="1" max="40" step="0.1" inputmode="decimal"></label>
+                <label class="field">BCS (1–9)<select class="both-bcs" data-profile-cat="fuji"></select></label>
+                <label class="field">Maintenance<select class="both-maintenance" data-profile-cat="fuji"></select></label>
+              </div>
+            </section>
+            <section class="cat-profile-card" aria-labelledby="both-lulu-title">
+              <h3 id="both-lulu-title">Lulu</h3>
+              <div class="profile-grid">
+                <label class="field">Weight (lb)<input class="both-weight" data-profile-cat="lulu" type="number" min="1" max="40" step="0.1" inputmode="decimal"></label>
+                <label class="field">BCS (1–9)<select class="both-bcs" data-profile-cat="lulu"></select></label>
+                <label class="field">Maintenance<select class="both-maintenance" data-profile-cat="lulu"></select></label>
+              </div>
+            </section>
+          </div>
+          <span class="field-help"><strong>Combined mode:</strong> Enter the total food and water supplied to both cats below. Requirements are calculated separately and then added. The combined total cannot confirm that each cat received the correct share.</span>
+        </div>
+      </div>
+
+      <div class="summary-grid" aria-live="polite">
+        <article class="metric">
+          <div class="metric-label">Calories entered</div>
+          <div class="metric-value"><span id="calories-total">0</span> kcal</div>
+          <p class="metric-context" id="calorie-context">Add food below to begin.</p>
+          <div class="meter warm" aria-hidden="true"><span id="calorie-meter"></span></div>
+        </article>
+        <article class="metric">
+          <div class="metric-label">Total water entered</div>
+          <div class="metric-value"><span id="water-total-oz">0.0</span> fl oz</div>
+          <p class="metric-context" id="water-total-context">0 mL · 0 cups, including food moisture</p>
+          <div class="meter" aria-hidden="true"><span id="water-meter"></span></div>
+        </article>
+        <article class="metric">
+          <div class="metric-label" id="target-weight-label">Estimated target weight</div>
+          <div class="metric-value"><span id="ideal-weight">—</span> lb</div>
+          <p class="metric-context" id="ideal-context">Based on the selected BCS.</p>
+          <div class="meter" aria-hidden="true"><span id="weight-meter"></span></div>
+        </article>
+      </div>
+
+      <div class="section-stack">
+        <section class="intake-section" aria-labelledby="wet-title">
+          <div class="section-head">
+            <div>
+              <h2 id="wet-title">Wet food</h2>
+              <p class="section-copy">Enter cans, ounces by weight, or grams. In the Fuji + Lulu tab, enter the household total. Food-water is estimated from the label’s maximum moisture.</p>
+            </div>
+            <p class="section-subtotal"><strong id="wet-kcal">0 kcal</strong><span id="wet-subtotal">0 oz food · 0 mL water</span></p>
+          </div>
+          <div class="food-list" id="wet-list"></div>
+        </section>
+
+        <section class="intake-section" aria-labelledby="dry-title">
+          <div class="section-head">
+            <div>
+              <h2 id="dry-title">Dry food</h2>
+              <p class="section-copy">Enter cups, tablespoons, ounces by weight, or grams. In the Fuji + Lulu tab, enter the household total.</p>
+            </div>
+            <p class="section-subtotal"><strong id="dry-kcal">0 kcal</strong><span id="dry-subtotal">0 cups food · 0 mL water</span></p>
+          </div>
+          <div class="food-list" id="dry-list"></div>
+        </section>
+
+        <section class="intake-section" aria-labelledby="water-title">
+          <div class="section-head">
+            <div>
+              <h2 id="water-title">Plain / added water</h2>
+              <p class="section-copy">Count measured bowl intake and water mixed into food. In the Fuji + Lulu tab, enter their combined total. Do not double-count water already included in canned food.</p>
+            </div>
+            <p class="section-subtotal"><strong id="direct-water-main">0 mL</strong><span id="direct-water-sub">0 fl oz · 0 cups</span></p>
+          </div>
+          <div class="food-list">
+            <div class="food-row water-row">
+              <div>
+                <div class="food-name">Water</div>
+                <div class="food-meta">Plain drinking water or extra water added to meals</div>
+              </div>
+              <label class="field"><span class="muted">Amount</span><input id="water-amount" type="number" min="0" step="0.1" inputmode="decimal" value="0"></label>
+              <label class="field unit-select"><span class="muted">Unit</span>
+                <select id="water-unit">
+                  <option value="floz">fl oz</option>
+                  <option value="cups">cups</option>
+                  <option value="ml">mL</option>
+                </select>
+              </label>
+              <div class="food-result"><strong id="direct-water-result">0 mL</strong><span>direct water</span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="bottom-grid">
+        <section class="panel target-panel" aria-labelledby="targets-title">
+          <h2 id="targets-title">Recommended daily starting points</h2>
+          <p>These are calculation starting points, not prescriptions. Adjust to measured weight trend and your veterinarian’s guidance.</p>
+          <div class="target-cards" aria-live="polite">
+            <div class="target-card"><span>Weight-loss calories</span><strong id="loss-target">—</strong></div>
+            <div class="target-card"><span>Maintenance calories</span><strong id="maintenance-target">—</strong></div>
+            <div class="target-card"><span>Recommended total-water range</span><strong id="water-target">—</strong></div>
+          </div>
+          <h3>How target weight changes with BCS</h3>
+          <p class="small muted" style="margin-top:6px">AAHA treats each point above 5/9 as roughly 10% over ideal. Choose the row that matches a hands-on exam.</p>
+          <div class="table-wrap" style="margin-top:10px">
+            <table>
+              <thead><tr><th id="scenario-bcs-head">BCS</th><th class="num">Est. ideal weight</th><th class="num">Weight-loss start</th><th class="num">Water range (current wt)</th></tr></thead>
+              <tbody id="scenario-body"></tbody>
+            </table>
+          </div>
+          <div class="method-note small" id="target-method-note"></div>
+        </section>
+
+        <aside class="panel safety-panel" aria-labelledby="safety-title">
+          <h2 id="safety-title">What the research means here</h2>
+          <ul>
+            <li>There is no defensible single “male DSH” or “female DSH” goal weight. BCS 4–5/9 is ideal; muscle condition matters too.</li>
+            <li>For safe feline weight loss, AAHA uses about <strong>0.8 × RER at ideal weight</strong> as a starting point and recommends monitoring. Cats should not lose more than about 1–2% of body weight weekly.</li>
+            <li>The total-water range is <strong>44–66 mL/kg of current body weight</strong> from the Merck Veterinary Manual. The progress bar treats the lower end as the daily minimum marker. Food moisture counts toward the total.</li>
+            <li>Wet food and increased water may help reduce lower-urinary-tract recurrence, but FIC management is multimodal and should also address stress and environment.</li>
+          </ul>
+          <div class="emergency"><strong>Urinary obstruction is an emergency.</strong> Repeated straining with little/no urine, crying, vomiting, hiding, a painful belly, or sudden lethargy warrants immediate emergency-veterinary care—do not wait for the calculator.</div>
+        </aside>
+      </div>
+
+      <details class="reference-panel">
+        <summary>Food label settings, calorie research, and sources</summary>
+        <div class="reference-body">
+          <p>Package formulas change. The values below are editable and saved in this browser. If your can or bag disagrees, <strong>the package label wins</strong>. Moisture is usually a guaranteed maximum, so calculated food-water is an estimate and may overstate the true amount.</p>
+          <div class="table-wrap">
+            <table class="reference-table">
+              <thead><tr><th>Food</th><th>Calories</th><th>Moisture %</th><th>Research note</th></tr></thead>
+              <tbody id="reference-body"></tbody>
+            </table>
+          </div>
+          <div class="toolbar" style="margin-top:14px; justify-content:flex-start">
+            <button class="button" id="reset-labels" type="button">Reset researched values</button>
+          </div>
+
+          <h3 style="margin-top:22px">Veterinary guidance</h3>
+          <ul class="source-list small">
+            <li><a href="https://www.aaha.org/resources/2021-aaha-nutrition-and-weight-management-guidelines/screening-evaluation/" target="_blank" rel="noreferrer">AAHA: BCS and estimated ideal weight</a></li>
+            <li><a href="https://www.aaha.org/resources/2021-aaha-nutrition-and-weight-management-guidelines/weight-reduction-in-the-obese-pet/" target="_blank" rel="noreferrer">AAHA: weight-loss and maintenance energy factors</a></li>
+            <li><a href="https://www.merckvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-of-small-animals" target="_blank" rel="noreferrer">Merck Veterinary Manual: RER/MER and water</a></li>
+            <li><a href="https://wsava.org/wp-content/uploads/2020/07/Calorie-Needs-for-Healthy-Adult-Cats-updated-July-2020.pdf" target="_blank" rel="noreferrer">WSAVA: healthy adult cat calorie table</a></li>
+            <li><a href="https://www.vet.cornell.edu/departments-centers-and-institutes/cornell-feline-health-center/health-information/feline-health-topics/hydration" target="_blank" rel="noreferrer">Cornell Feline Health Center: hydration</a></li>
+            <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11816079/" target="_blank" rel="noreferrer">2025 iCatCare lower urinary tract consensus guideline</a></li>
+          </ul>
+
+          <h3 style="margin-top:22px">Manufacturer / product references</h3>
+          <ul class="source-list small" id="product-sources"></ul>
+          <p class="method-note small"><strong>Variety-pack decisions:</strong> The linked Fancy Feast Poultry &amp; Beef pack uses 92 kcal/can, the rounded average of its chicken, turkey/giblets, and beef recipes (91–93). The linked Friskies Shreds pack uses 129 kcal/can (128–130). The linked Costco Friskies pack varies too much for one safe average: its five true patés average 174 kcal/can (171–177), while the Glaz’d Chicken can is only 129 kcal and therefore has its own calculator row. Instinct Original Paté uses 213 kcal/can (212–214 across current chicken/duck/salmon recipes). Kirkland is set to 109 kcal/tray for the current formula; older trays were commonly labeled 98, so check the sleeve.</p>
+        </div>
+      </details>
+    </section>
+
+    <footer class="footer">Research checked September 27, 2026 · Data stays on this device in browser storage · No account or internet connection is required after saving the file.</footer>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const OZ_TO_G = 28.349523125;
+      const FLOZ_TO_ML = 29.5735295625;
+      const CUP_TO_ML = 236.5882365;
+      const STORAGE_KEY = 'fuji-lulu-intake-calculator-v1';
+
+      const defaultFoods = [
+        {
+          id: 'hills-cd-stress-wet', group: 'wet',
+          name: "Hill's Prescription Diet c/d Multicare Stress with Chicken",
+          short: "Hill's c/d Stress wet", kcal: 174, moisture: 78, packageOz: 5.5,
+          note: '174 kcal / 5.5 oz can. Therapeutic urinary food; feed as directed by Fuji’s veterinarian.',
+          source: 'https://www.hillspet.com/cat-food/prescription-diet-cd-multicare-stress-chicken-urinary-care-canned',
+          listing: 'https://www.chewy.com/hills-prescription-diet-cd-multicare/dp/1104262'
+        },
+        {
+          id: 'fancy-feast-classic-pate', group: 'wet',
+          name: 'Fancy Feast Classic Paté Poultry & Beef pack (3 oz average)',
+          short: 'Fancy Feast Poultry & Beef Paté', kcal: 92, moisture: 78, packageOz: 3,
+          note: 'Linked 24-pack average: chicken 91, turkey & giblets 93, and tender beef 93 kcal/can; rounded average 92.',
+          source: 'https://www.purina.com/cats/shop/fancy-feast-timeless-favorites-classic-pate-chicken-wet-cat-food',
+          listing: 'https://www.amazon.com/dp/B001STPJJO'
+        },
+        {
+          id: 'friskies-shreds', group: 'wet',
+          name: 'Friskies Shreds (5.5 oz variety average)',
+          short: 'Friskies Shreds', kcal: 129, moisture: 82, packageOz: 5.5,
+          note: 'Linked variety-pack average; current recipes are tightly grouped at 128–130 kcal/can.',
+          source: 'https://www.purina.com/cats/shop/friskies-shreds-variety-pack-32-can-wet-cat-food',
+          listing: 'https://www.amazon.com/dp/B005OCXRRW'
+        },
+        {
+          id: 'friskies-pate', group: 'wet',
+          name: 'Friskies Paté — Costco pack, 5 paté flavors (5.5 oz average)',
+          short: 'Friskies Costco Paté flavors', kcal: 174, moisture: 78, packageOz: 5.5,
+          note: 'Five patés in the linked 60-pack average 174 kcal: whitefish/tuna 174, liver/chicken 175, mixed grill 175, turkey/giblets 171, Mariner’s Catch 177.',
+          source: 'https://www.purina.com/cats/shop/friskies-mixed-grill-pate-wet-cat-food',
+          listing: 'https://www.costco.com/p/-/purina-friskies-pate-wet-cat-food-variety-pack-55-oz-60-count/4000437479'
+        },
+        {
+          id: 'friskies-glazed-chicken', group: 'wet',
+          name: 'Friskies Glaz’d & Infuz’d Chicken in Gravy — Costco pack outlier (5.5 oz)',
+          short: 'Friskies Glaz’d Chicken', kcal: 129, moisture: 82, packageOz: 5.5,
+          note: 'The sixth recipe in the linked Costco “paté” pack is a gravy formula at 129 kcal/can—45–48 kcal below the five actual patés—so it is tracked separately.',
+          source: 'https://www.purina.com/cats/shop/friskies-glazd-infuzd-with-gravy-chicken-wet-cat-food',
+          listing: 'https://www.costco.com/p/-/purina-friskies-pate-wet-cat-food-variety-pack-55-oz-60-count/4000437479'
+        },
+        {
+          id: 'kirkland-pate', group: 'wet',
+          name: 'Kirkland Signature Paté (3.5 oz)',
+          short: 'Kirkland Paté', kcal: 109, moisture: 80, packageOz: 3.5,
+          note: 'Current formula reported at 109 kcal/tray; older trays were 98 kcal. Check the sleeve because this changed materially.',
+          source: 'https://www.costco.com/p/-/kirkland-signature-pate-cat-food-variety-pack-35-oz-45-count/100986874',
+          listing: 'https://www.costco.com/p/-/kirkland-signature-pate-cat-food-variety-pack-35-oz-45-count/100986874'
+        },
+        {
+          id: 'wellness-turkey-gravy', group: 'wet',
+          name: 'Wellness Complete Health Turkey Dinner Bits in Gravy (5.5 oz)',
+          short: 'Wellness Turkey Dinner', kcal: 129, moisture: 83, packageOz: 5.5,
+          note: '830 kcal/kg gives about 129 kcal per 156 g can; the 3 oz can is about 71 kcal.',
+          source: 'https://www.wellnesspetfood.com/product-catalog/wellness-complete-health-gravies-turkey-dinner/',
+          listing: 'https://www.amazon.com/dp/B06VX8KC2Z'
+        },
+        {
+          id: 'instinct-original-pate', group: 'wet',
+          name: 'Instinct Original Grain-Free Paté (5.5 oz average)',
+          short: 'Instinct Original Paté', kcal: 213, moisture: 78, packageOz: 5.5,
+          note: 'Current chicken/duck/salmon recipes average 213 kcal (212–214). Older recipes may show roughly 193–205.',
+          source: 'https://www.instinctpetfood.com/products/original-pates-for-cats',
+          listing: 'https://www.amazon.com/dp/B07NLZKK4Q'
+        },
+        {
+          id: 'hills-urinary-hairball-wet', group: 'wet',
+          name: "Hill's Science Diet Adult Urinary & Hairball Control (5.5 oz)",
+          short: "Hill's Urinary & Hairball wet", kcal: 159, moisture: 78, packageOz: 5.5,
+          note: 'Savory Chicken Entrée: 159 kcal / 5.5 oz can.',
+          source: 'https://www.hillspet.com/cat-food/science-diet-adult-urinary-hairball-control-canned',
+          listing: 'https://www.amazon.com/dp/B01IRB054O'
+        },
+        {
+          id: 'purina-one-indoor', group: 'dry',
+          name: 'Purina ONE +Plus Indoor Advantage Turkey',
+          short: 'Purina ONE Indoor Advantage', kcal: 373, moisture: 12, gramsCup: 99,
+          note: '373 kcal/cup; 99 g per cup. Older labels may show 372.',
+          source: 'https://www.purina.com/cats/shop/purina-one-indoor-cat-food-dry-cat-food',
+          listing: 'https://www.amazon.com/dp/B005LMVGXC'
+        },
+        {
+          id: 'hills-perfect-weight', group: 'dry',
+          name: "Hill's Science Diet Adult Perfect Weight Chicken Recipe",
+          short: "Hill's Perfect Weight dry", kcal: 319, moisture: 8, gramsCup: 94,
+          note: 'Current listings are about 319 kcal/cup; some labels show 315. Use your bag.',
+          source: 'https://www.hillspet.com/cat-food/science-diet-adult-perfect-weight-dry',
+          listing: 'https://www.amazon.com/dp/B00HPZENCE'
+        },
+        {
+          id: 'hills-cd-stress-dry', group: 'dry',
+          name: "Hill's Prescription Diet c/d Multicare Urinary Stress with Chicken",
+          short: "Hill's c/d Stress dry", kcal: 349, moisture: 8, gramsCup: 91,
+          note: '3844 kcal/kg; 349 kcal/cup; about 91 g per cup. Therapeutic urinary food.',
+          source: 'https://www.hillspet.com/cat-food/prescription-diet-cd-multicare-stress-chicken-urinary-care-dry',
+          listing: 'https://www.petco.com/product/hills-prescription-diet-cd-multicare-urinary-stress-with-chicken-dry-cat-food-176-lbs-3035153'
+        }
+      ];
+
+      const baseState = {
+        activeCat: 'fuji',
+        cats: {
+          fuji: { name: 'Fuji', weight: 12.8, bcs: 5, maintenance: 'indoor' },
+          lulu: { name: 'Lulu', weight: 11.6, bcs: 5, maintenance: 'indoor' }
+        },
+        amounts: { fuji: {}, lulu: {}, both: {} },
+        water: {
+          fuji: { amount: 0, unit: 'floz' },
+          lulu: { amount: 0, unit: 'floz' },
+          both: { amount: 0, unit: 'floz' }
+        },
+        overrides: {}
+      };
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (!saved) return structuredClone(baseState);
+          return {
+            ...structuredClone(baseState), ...saved,
+            cats: { ...structuredClone(baseState.cats), ...(saved.cats || {}) },
+            amounts: { ...structuredClone(baseState.amounts), ...(saved.amounts || {}) },
+            water: { ...structuredClone(baseState.water), ...(saved.water || {}) },
+            overrides: saved.overrides || {}
+          };
+        } catch (_) {
+          return JSON.parse(JSON.stringify(baseState));
+        }
+      }
+
+      let state = loadState();
+
+      function saveState() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) {}
+      }
+
+      const $ = (selector) => document.querySelector(selector);
+      const $$ = (selector) => [...document.querySelectorAll(selector)];
+      const num = (value) => Number.isFinite(Number(value)) ? Number(value) : 0;
+      const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const round = (value, digits = 0) => Number(value).toFixed(digits);
+      const cat = () => state.cats[state.activeCat];
+      const isBoth = () => state.activeCat === 'both';
+      const activeLabel = () => isBoth() ? 'Fuji + Lulu' : cat().name;
+
+      function foodWithOverrides(food) {
+        return { ...food, ...(state.overrides[food.id] || {}) };
+      }
+
+      function amountFor(foodId) {
+        const saved = state.amounts[state.activeCat][foodId];
+        const food = defaultFoods.find((item) => item.id === foodId);
+        return saved || { amount: 0, unit: food.group === 'wet' ? 'cans' : 'cups' };
+      }
+
+      function foodCalculation(food) {
+        const f = foodWithOverrides(food);
+        const entry = amountFor(food.id);
+        const amount = Math.max(0, num(entry.amount));
+        let grams = 0;
+        let cupEquivalent = 0;
+
+        if (food.group === 'wet') {
+          const packageG = f.packageOz * OZ_TO_G;
+          if (entry.unit === 'cans') grams = amount * packageG;
+          if (entry.unit === 'oz') grams = amount * OZ_TO_G;
+          if (entry.unit === 'g') grams = amount;
+          const calories = packageG > 0 ? grams / packageG * f.kcal : 0;
+          return { grams, calories, waterMl: grams * f.moisture / 100, cans: packageG > 0 ? grams / packageG : 0, cups: 0 };
+        }
+
+        if (entry.unit === 'cups') cupEquivalent = amount;
+        if (entry.unit === 'tbsp') cupEquivalent = amount / 16;
+        if (entry.unit === 'oz') grams = amount * OZ_TO_G;
+        if (entry.unit === 'g') grams = amount;
+        if (entry.unit === 'oz' || entry.unit === 'g') cupEquivalent = f.gramsCup > 0 ? grams / f.gramsCup : 0;
+        else grams = cupEquivalent * f.gramsCup;
+        return { grams, calories: cupEquivalent * f.kcal, waterMl: grams * f.moisture / 100, cups: cupEquivalent, cans: 0 };
+      }
+
+      function directWaterMl() {
+        const entry = state.water[state.activeCat];
+        const amount = Math.max(0, num(entry.amount));
+        if (entry.unit === 'floz') return amount * FLOZ_TO_ML;
+        if (entry.unit === 'cups') return amount * CUP_TO_ML;
+        return amount;
+      }
+
+      function totals() {
+        const rows = defaultFoods.map((food) => ({ food, ...foodCalculation(food) }));
+        const wet = rows.filter((row) => row.food.group === 'wet').reduce(sumRows, emptyTotals());
+        const dry = rows.filter((row) => row.food.group === 'dry').reduce(sumRows, emptyTotals());
+        const direct = directWaterMl();
+        return {
+          rows, wet, dry, direct,
+          calories: wet.calories + dry.calories,
+          waterMl: wet.waterMl + dry.waterMl + direct
+        };
+      }
+
+      function emptyTotals() { return { grams: 0, calories: 0, waterMl: 0, cups: 0, cans: 0 }; }
+      function sumRows(acc, row) {
+        acc.grams += row.grams;
+        acc.calories += row.calories;
+        acc.waterMl += row.waterMl;
+        acc.cups += row.cups;
+        acc.cans += row.cans;
+        return acc;
+      }
+
+      function idealWeightFromBcs(weightLb, bcs) {
+        if (bcs <= 5) return weightLb;
+        return weightLb / (1 + (bcs - 5) * 0.10);
+      }
+
+      function targetsFor(weightLb, bcs, profile) {
+        const idealLb = idealWeightFromBcs(weightLb, bcs);
+        const kg = idealLb / 2.2046226218;
+        const rer = 70 * Math.pow(kg, 0.75);
+        const factors = {
+          indoor: { min: 1.0, max: 1.0, label: 'Indoor / easy keeper' },
+          neutered: { min: 1.2, max: 1.4, label: 'Typical neutered adult' },
+          intact: { min: 1.4, max: 1.6, label: 'Intact adult' }
+        }[profile];
+        return {
+          idealLb, rer,
+          loss: 0.8 * rer,
+          maintenanceMin: factors.min * rer,
+          maintenanceMax: factors.max * rer,
+          profileLabel: factors.label,
+          waterMinMl: weightLb / 2.2046226218 * 44,
+          waterMaxMl: weightLb / 2.2046226218 * 66
+        };
+      }
+
+      function targetRecord(key) {
+        const profile = state.cats[key];
+        return { key, profile, target: targetsFor(profile.weight, profile.bcs, profile.maintenance) };
+      }
+
+      function activeTargets() {
+        if (!isBoth()) {
+          const record = targetRecord(state.activeCat);
+          return {
+            ...record.target,
+            combined: false,
+            currentLb: record.profile.weight,
+            records: [record]
+          };
+        }
+
+        const records = ['fuji', 'lulu'].map(targetRecord);
+        const sum = (field) => records.reduce((total, record) => total + record.target[field], 0);
+        return {
+          combined: true,
+          records,
+          currentLb: records.reduce((total, record) => total + record.profile.weight, 0),
+          idealLb: sum('idealLb'),
+          maintenanceMin: sum('maintenanceMin'),
+          maintenanceMax: sum('maintenanceMax'),
+          waterMinMl: sum('waterMinMl'),
+          waterMaxMl: sum('waterMaxMl'),
+          loss: records.filter((record) => record.profile.bcs > 5).reduce((total, record) => total + record.target.loss, 0),
+          lossRecords: records.filter((record) => record.profile.bcs > 5),
+          profileLabel: 'sum of each cat’s selected profile'
+        };
+      }
+
+      function lossTextFor(target) {
+        if (!target.combined) {
+          const record = target.records[0];
+          return record.profile.bcs > 5 ? `${Math.round(record.target.loss)} kcal/day` : 'Not indicated at selected BCS';
+        }
+        if (!target.lossRecords.length) return 'Not indicated for either cat';
+        if (target.lossRecords.length === 1) {
+          const record = target.lossRecords[0];
+          return `${record.profile.name} only: ${Math.round(record.target.loss)} kcal/day`;
+        }
+        return `${Math.round(target.loss)} kcal/day combined`;
+      }
+
+      function formatMaintenance(target) {
+        const min = Math.round(target.maintenanceMin);
+        const max = Math.round(target.maintenanceMax);
+        return min === max ? `${min} kcal/day` : `${min}–${max} kcal/day`;
+      }
+
+      function waterTriple(ml, compact = false) {
+        const oz = ml / FLOZ_TO_ML;
+        const cups = ml / CUP_TO_ML;
+        return compact
+          ? `${Math.round(ml)} mL · ${round(oz, 1)} oz · ${round(cups, 2)} cups`
+          : `${round(oz, 1)} fl oz · ${round(cups, 2)} cups · ${Math.round(ml)} mL`;
+      }
+
+      function waterRange(target) {
+        return `${Math.round(target.waterMinMl)}–${Math.round(target.waterMaxMl)} mL · ${round(target.waterMinMl / FLOZ_TO_ML, 1)}–${round(target.waterMaxMl / FLOZ_TO_ML, 1)} fl oz · ${round(target.waterMinMl / CUP_TO_ML, 2)}–${round(target.waterMaxMl / CUP_TO_ML, 2)} cups`;
+      }
+
+      function unitsFor(group) {
+        return group === 'wet'
+          ? [['cans', 'cans'], ['oz', 'oz wt'], ['g', 'grams']]
+          : [['cups', 'cups'], ['tbsp', 'tbsp'], ['oz', 'oz wt'], ['g', 'grams']];
+      }
+
+      function renderFoodRows(group) {
+        const host = $(`#${group}-list`);
+        host.innerHTML = defaultFoods.filter((food) => food.group === group).map((food) => {
+          const f = foodWithOverrides(food);
+          const entry = amountFor(food.id);
+          const basis = group === 'wet'
+            ? `${Math.round(f.kcal)} kcal/can · ${f.packageOz} oz · ${round(f.moisture, 0)}% moisture max`
+            : `${Math.round(f.kcal)} kcal/cup · ${Math.round(f.gramsCup)} g/cup · ${round(f.moisture, 0)}% moisture`;
+          const options = unitsFor(group).map(([value, label]) => `<option value="${value}"${entry.unit === value ? ' selected' : ''}>${label}</option>`).join('');
+          return `
+            <div class="food-row" data-food-row="${food.id}">
+              <div>
+                <div class="food-name">${food.name}</div>
+                <div class="food-meta">${basis}</div>
+              </div>
+              <label class="field"><span class="muted">Amount</span><input class="food-amount" data-food="${food.id}" type="number" min="0" step="0.05" inputmode="decimal" value="${num(entry.amount)}"></label>
+              <label class="field unit-select"><span class="muted">Unit</span><select class="food-unit" data-food="${food.id}">${options}</select></label>
+              <div class="food-result" aria-live="polite"><strong data-food-kcal="${food.id}">0 kcal</strong><span data-food-water="${food.id}">0 mL food-water</span></div>
+            </div>`;
+        }).join('');
+      }
+
+      function renderReferenceRows() {
+        $('#reference-body').innerHTML = defaultFoods.map((food) => {
+          const f = foodWithOverrides(food);
+          const calorieUnit = food.group === 'wet' ? `kcal / ${food.packageOz} oz can` : 'kcal / cup';
+          return `
+            <tr>
+              <td><a href="${food.source}" target="_blank" rel="noreferrer">${food.short}</a>${food.listing ? `<br><a class="small" href="${food.listing}" target="_blank" rel="noreferrer">Exact listing supplied</a>` : ''}</td>
+              <td><label class="field"><span class="muted">${calorieUnit}</span><input class="override-kcal" data-food="${food.id}" type="number" min="1" step="1" value="${num(f.kcal)}"></label></td>
+              <td><label class="field"><span class="muted">percent</span><input class="override-moisture" data-food="${food.id}" type="number" min="0" max="99" step="0.1" value="${num(f.moisture)}"></label></td>
+              <td class="small">${food.note}</td>
+            </tr>`;
+        }).join('');
+
+        $('#product-sources').innerHTML = defaultFoods.map((food) => `<li><a href="${food.source}" target="_blank" rel="noreferrer">${food.short} — manufacturer</a>${food.listing ? ` · <a href="${food.listing}" target="_blank" rel="noreferrer">exact listing supplied</a>` : ''}</li>`).join('');
+      }
+
+      function bcsOptions(selected) {
+        const labels = {
+          3: '3 — under ideal', 4: '4 — lean / ideal', 5: '5 — ideal',
+          6: '6 — ~10% over ideal', 7: '7 — ~20% over ideal',
+          8: '8 — ~30% over ideal', 9: '9 — ~40% over ideal'
+        };
+        return Object.entries(labels).map(([value, label]) => `<option value="${value}"${num(selected) === num(value) ? ' selected' : ''}>${label}</option>`).join('');
+      }
+
+      function maintenanceOptions(selected) {
+        const labels = {
+          indoor: 'Indoor / easy keeper · 1.0× RER',
+          neutered: 'Typical neutered adult · 1.2–1.4× RER',
+          intact: 'Intact adult · 1.4–1.6× RER'
+        };
+        return Object.entries(labels).map(([value, label]) => `<option value="${value}"${selected === value ? ' selected' : ''}>${label}</option>`).join('');
+      }
+
+      function renderProfile() {
+        $('#single-profile-fields').hidden = isBoth();
+        $('#both-profile-fields').hidden = !isBoth();
+
+        if (isBoth()) {
+          $$('.both-weight').forEach((input) => { input.value = state.cats[input.dataset.profileCat].weight; });
+          $$('.both-bcs').forEach((select) => { select.innerHTML = bcsOptions(state.cats[select.dataset.profileCat].bcs); });
+          $$('.both-maintenance').forEach((select) => { select.innerHTML = maintenanceOptions(state.cats[select.dataset.profileCat].maintenance); });
+        } else {
+          const active = cat();
+          $('#current-weight').value = active.weight;
+          $('#bcs-select').value = active.bcs;
+          $('#maintenance-profile').value = active.maintenance;
+        }
+
+        $('#water-amount').value = state.water[state.activeCat].amount;
+        $('#water-unit').value = state.water[state.activeCat].unit;
+
+        $('#tab-fuji').textContent = `Fuji · ${round(state.cats.fuji.weight, 1)} lb`;
+        $('#tab-lulu').textContent = `Lulu · ${round(state.cats.lulu.weight, 1)} lb`;
+        $('#tab-both').textContent = `Fuji + Lulu · ${round(state.cats.fuji.weight + state.cats.lulu.weight, 1)} lb`;
+        $('#target-weight-label').textContent = isBoth() ? 'Combined target weight' : 'Estimated target weight';
+
+        $$('.cat-tab').forEach((tab) => {
+          const selected = tab.dataset.cat === state.activeCat;
+          tab.setAttribute('aria-selected', String(selected));
+        });
+        $('#calculator-panel').setAttribute('aria-labelledby', `tab-${state.activeCat}`);
+      }
+
+      function updateSummary() {
+        const target = activeTargets();
+        const total = totals();
+
+        total.rows.forEach((row) => {
+          const kcalEl = document.querySelector(`[data-food-kcal="${row.food.id}"]`);
+          const waterEl = document.querySelector(`[data-food-water="${row.food.id}"]`);
+          if (kcalEl) kcalEl.textContent = `${Math.round(row.calories)} kcal`;
+          if (waterEl) waterEl.textContent = `${Math.round(row.waterMl)} mL food-water`;
+        });
+
+        $('#wet-kcal').textContent = `${Math.round(total.wet.calories)} kcal`;
+        $('#wet-subtotal').textContent = `${round(total.wet.grams / OZ_TO_G, 1)} oz food · ${waterTriple(total.wet.waterMl, true)}`;
+        $('#dry-kcal').textContent = `${Math.round(total.dry.calories)} kcal`;
+        $('#dry-subtotal').textContent = `${round(total.dry.cups, 2)} cups · ${round(total.dry.grams / OZ_TO_G, 1)} oz wt · ${Math.round(total.dry.waterMl)} mL water`;
+
+        $('#direct-water-main').textContent = `${Math.round(total.direct)} mL`;
+        $('#direct-water-sub').textContent = `${round(total.direct / FLOZ_TO_ML, 1)} fl oz · ${round(total.direct / CUP_TO_ML, 2)} cups`;
+        $('#direct-water-result').textContent = waterTriple(total.direct, true);
+
+        $('#calories-total').textContent = Math.round(total.calories);
+        $('#water-total-oz').textContent = round(total.waterMl / FLOZ_TO_ML, 1);
+        const waterRemaining = Math.max(0, target.waterMinMl - total.waterMl);
+        const waterStatus = waterRemaining > 0
+          ? `${Math.round(waterRemaining)} mL to the ${Math.round(target.waterMinMl)} mL minimum`
+          : `${Math.round(target.waterMinMl)} mL minimum reached`;
+        $('#water-total-context').textContent = `${Math.round(total.waterMl)} mL · ${round(total.waterMl / CUP_TO_ML, 2)} cups, including food moisture · ${waterStatus}`;
+        $('#ideal-weight').textContent = round(target.idealLb, 1);
+
+        const maintenanceText = formatMaintenance(target);
+        const lossText = lossTextFor(target);
+        $('#loss-target').textContent = lossText;
+        $('#maintenance-target').textContent = maintenanceText;
+        $('#water-target').textContent = waterRange(target);
+
+        if (target.combined) {
+          const [fuji, lulu] = target.records;
+          $('#ideal-context').textContent = `Fuji ${round(fuji.target.idealLb, 1)} lb + Lulu ${round(lulu.target.idealLb, 1)} lb.`;
+          $('#calorie-context').textContent = `${maintenanceText} combined maintenance · ${lossText}`;
+        } else {
+          const active = target.records[0].profile;
+          if (active.bcs > 5) {
+            $('#ideal-context').textContent = `Selected BCS ${active.bcs}/9 implies about ${(active.bcs - 5) * 10}% over ideal.`;
+            $('#calorie-context').textContent = `${lossText} loss start · ${maintenanceText} maintenance`;
+          } else if (active.bcs < 4) {
+            $('#ideal-context').textContent = 'Under-ideal BCS: veterinarian assessment is recommended before setting a target.';
+            $('#calorie-context').textContent = `${maintenanceText} maintenance estimate; do not restrict for weight loss.`;
+          } else {
+            $('#ideal-context').textContent = `At BCS ${active.bcs}/9, current weight is treated as provisionally ideal.`;
+            $('#calorie-context').textContent = `${maintenanceText} maintenance · weight loss not indicated`;
+          }
+        }
+
+        const maintenanceMid = (target.maintenanceMin + target.maintenanceMax) / 2;
+        $('#calorie-meter').style.width = `${clamp(total.calories / maintenanceMid * 100, 0, 100)}%`;
+        $('#water-meter').style.width = `${clamp(total.waterMl / target.waterMinMl * 100, 0, 100)}%`;
+        $('#weight-meter').style.width = `${clamp(target.idealLb / target.currentLb * 100, 0, 100)}%`;
+
+        renderScenarios(target);
+        if (target.combined) {
+          const details = target.records.map((record) => `${record.profile.name}: BCS ${record.profile.bcs}/9, target ${round(record.target.idealLb, 1)} lb, ${formatMaintenance(record.target)} maintenance`).join(' · ');
+          $('#target-method-note').innerHTML = `<strong>Fuji + Lulu together:</strong> ${details}. Combined requirements are the sum of two separate cat calculations—not one calculation based on their combined weight. The ${Math.round(target.waterMinMl)}–${Math.round(target.waterMaxMl)} mL range includes food moisture; the lower endpoint is the minimum marker.`;
+        } else {
+          const active = target.records[0].profile;
+          $('#target-method-note').innerHTML = `<strong>${active.name} right now:</strong> At the selected BCS ${active.bcs}/9, estimated ideal weight is ${round(target.idealLb, 1)} lb. Maintenance uses the “${target.profileLabel}” factor. The ${Math.round(target.waterMinMl)}–${Math.round(target.waterMaxMl)} mL water range uses current body weight; food moisture is included and the lower endpoint is the minimum marker.`;
+        }
+      }
+
+      function renderScenarios(target) {
+        const body = $('#scenario-body');
+        $('#scenario-bcs-head').textContent = target.combined ? 'Cat / BCS' : 'BCS';
+        const records = target.records;
+        body.innerHTML = records.flatMap((record) => [5, 6, 7, 8, 9].map((bcs) => {
+          const t = targetsFor(record.profile.weight, bcs, record.profile.maintenance);
+          const loss = bcs > 5 ? `${Math.round(t.loss)} kcal` : 'Not indicated';
+          const label = `${target.combined ? record.profile.name + ' · ' : ''}${bcs}/9${bcs === 5 ? ' · ideal' : ` · ~${(bcs - 5) * 10}% over`}`;
+          return `<tr${bcs === record.profile.bcs ? ' style="background:var(--brand-soft)"' : ''}><td>${label}</td><td class="num">${round(t.idealLb, 1)} lb</td><td class="num">${loss}</td><td class="num">${Math.round(t.waterMinMl)}–${Math.round(t.waterMaxMl)} mL</td></tr>`;
+        })).join('');
+      }
+
+      function renderAll() {
+        renderProfile();
+        renderFoodRows('wet');
+        renderFoodRows('dry');
+        renderReferenceRows();
+        updateSummary();
+      }
+
+      function toast(message) {
+        const el = $('#toast');
+        el.textContent = message;
+        el.classList.add('show');
+        clearTimeout(toast.timer);
+        toast.timer = setTimeout(() => el.classList.remove('show'), 2200);
+      }
+
+      function summaryText() {
+        const t = activeTargets();
+        const total = totals();
+        const used = total.rows.filter((row) => row.calories > 0).map((row) => `- ${row.food.short}: ${Math.round(row.calories)} kcal, ~${Math.round(row.waterMl)} mL water`).join('\n') || '- No food entered';
+        const profiles = t.records.map((record) => `${record.profile.name}: ${round(record.profile.weight, 1)} lb, BCS ${record.profile.bcs}/9, estimated ideal ${round(record.target.idealLb, 1)} lb`).join('\n');
+        const sharingNote = t.combined ? '\nCombined entries must still be divided appropriately between the two cats.' : '';
+        return `${activeLabel()} — daily intake\n${profiles}\n\nFood\n${used}\n\nCalories: ${Math.round(total.calories)} kcal\nWeight-loss start: ${lossTextFor(t)}\nMaintenance: ${formatMaintenance(t)}\n\nTotal water: ${waterTriple(total.waterMl, true)}\nRecommended total-water range: ${waterRange(t)}\nMinimum marker: ${Math.round(t.waterMinMl)} mL\n(Estimates include food moisture.)${sharingNote}`;
+      }
+
+      async function copySummary() {
+        const text = summaryText();
+        try {
+          await navigator.clipboard.writeText(text);
+          toast('Day summary copied.');
+        } catch (_) {
+          const area = document.createElement('textarea');
+          area.value = text;
+          document.body.appendChild(area);
+          area.select();
+          document.execCommand('copy');
+          area.remove();
+          toast('Day summary copied.');
+        }
+      }
+
+      document.addEventListener('input', (event) => {
+        const target = event.target;
+        if (target.matches('.food-amount')) {
+          const id = target.dataset.food;
+          const current = amountFor(id);
+          state.amounts[state.activeCat][id] = { ...current, amount: Math.max(0, num(target.value)) };
+          saveState(); updateSummary();
+        }
+        if (target.matches('.override-kcal, .override-moisture')) {
+          const id = target.dataset.food;
+          const food = defaultFoods.find((item) => item.id === id);
+          const current = state.overrides[id] || {};
+          if (target.matches('.override-kcal')) current.kcal = Math.max(1, num(target.value));
+          if (target.matches('.override-moisture')) current.moisture = clamp(num(target.value), 0, 99);
+          state.overrides[id] = current;
+          saveState();
+          renderFoodRows(food.group);
+          updateSummary();
+        }
+        if (target.id === 'water-amount') {
+          state.water[state.activeCat] = {
+            amount: Math.max(0, num(target.value)),
+            unit: $('#water-unit').value
+          };
+          saveState(); updateSummary();
+        }
+      });
+
+      document.addEventListener('change', (event) => {
+        const target = event.target;
+        if (target.matches('.food-unit')) {
+          const id = target.dataset.food;
+          const current = amountFor(id);
+          state.amounts[state.activeCat][id] = { ...current, unit: target.value };
+          saveState(); updateSummary();
+        }
+        if (target.id === 'current-weight') {
+          cat().weight = clamp(num(target.value), 1, 40);
+          saveState(); updateSummary();
+        }
+        if (target.id === 'bcs-select') {
+          cat().bcs = clamp(Math.round(num(target.value)), 1, 9);
+          saveState(); updateSummary();
+        }
+        if (target.id === 'maintenance-profile') {
+          cat().maintenance = target.value;
+          saveState(); updateSummary();
+        }
+        if (target.matches('.both-weight')) {
+          state.cats[target.dataset.profileCat].weight = clamp(num(target.value), 1, 40);
+          saveState(); renderProfile(); updateSummary();
+        }
+        if (target.matches('.both-bcs')) {
+          state.cats[target.dataset.profileCat].bcs = clamp(Math.round(num(target.value)), 1, 9);
+          saveState(); updateSummary();
+        }
+        if (target.matches('.both-maintenance')) {
+          state.cats[target.dataset.profileCat].maintenance = target.value;
+          saveState(); updateSummary();
+        }
+        if (target.id === 'water-amount' || target.id === 'water-unit') {
+          state.water[state.activeCat] = {
+            amount: Math.max(0, num($('#water-amount').value)),
+            unit: $('#water-unit').value
+          };
+          saveState(); updateSummary();
+        }
+      });
+
+      $$('.cat-tab').forEach((tab) => tab.addEventListener('click', () => {
+        state.activeCat = tab.dataset.cat;
+        saveState(); renderAll();
+      }));
+
+      $('#copy-summary').addEventListener('click', copySummary);
+      $('#print-page').addEventListener('click', () => window.print());
+      $('#clear-day').addEventListener('click', () => {
+        state.amounts[state.activeCat] = {};
+        state.water[state.activeCat] = { amount: 0, unit: 'floz' };
+        saveState(); renderAll(); toast(`${activeLabel()}’s entered amounts were cleared.`);
+      });
+      $('#reset-labels').addEventListener('click', () => {
+        state.overrides = {};
+        saveState(); renderAll(); toast('Researched food values restored.');
+      });
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
